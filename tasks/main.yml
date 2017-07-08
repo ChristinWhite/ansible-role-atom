@@ -1,16 +1,16 @@
 ---
 
 # Install Atom from Homebrew Cask
-- name: Install Atom from Homebrew Cask if necessary
+- name: Install Atom if necessary
   homebrew_cask: name="atom" state=present
 
 # Install Atom Beta from Homebrew Cask if the `beta` boolean is not configured
-- name: Install Atom Beta from Homebrew Cask if configured
+- name: Install Atom Beta
   homebrew_cask: name="atom-beta" state=present
   when: beta
 
 # Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
-- name: Ensure Atom and apm (Atom Package Manager) are installed
+- name: Ensure Atom and apm are installed
   command: which atom apm
   register: atom_status
   failed_when: atom_status.rc
@@ -25,12 +25,12 @@
 # Exceptions:
 
 # Delete unused packages in node_modules
-- name: "apm clean : delete unused packages in node_modules"
+- name: "apm clean"
   command: apm clean
   when: clean is defined
 
 # Set environment and configuration variables for Atom
-- name: "apm config : set environment and configuration variables"
+- name: "apm config"
   command: "apm config {{ item.command }} {{ item.key | default(omit) }} {{ item.value | default(omit) }}"
   when:
     - item is defined
@@ -39,7 +39,7 @@
   with_items: "{{ config }}"
 
 # Deduplicate node_module packages
-- name: "apm dedupe : deduplicate node_module packages"
+- name: "apm dedupe"
   command: "apm dedupe {{ item }}"
   when:
     - item is defined

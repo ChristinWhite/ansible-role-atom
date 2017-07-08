@@ -197,7 +197,7 @@ Check [Superlumic](https://github.com/superlumic/superlumic) for documentation. 
 
 ## Ansible
 
-Non-Superlumic configuration and testing will be completed after basic role is complete.
+Non-Superlumic configuration and testing will be completed after basic role is finished.
 
 # License
 
