@@ -1,0 +1,81 @@
+---
+
+# Install Atom from Homebrew Cask
+- name: Install Atom from Homebrew Cask if necessary
+  homebrew_cask: name="atom" state=present
+
+# Install Atom Beta from Homebrew Cask if the `beta` boolean is not configured
+- name: Install Atom Beta from Homebrew Cask if configured
+  homebrew_cask: name="atom-beta" state=present
+  when: beta
+
+# Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
+- name: Ensure Atom and apm (Atom Package Manager) are installed
+  command: which atom apm
+  register: atom_status
+  failed_when: atom_status.rc
+  changed_when: false
+  check_mode: no
+
+### APM Package Management
+#
+# Description:
+#   These tasks automate Atom package management using apm, Atom's package CLI. These tasks are not yet complete but I am adding adding more as I improve the role. Some apm commands do not make sense in the context of Ansible automation and are listed below, some options may not be included for the same reasons. Note that I am only adding primary commands, alaises such as `delete`, `remove` and `erase` instead of `uninstall` will not work.
+#
+# Exceptions:
+
+# Delete unused packages in node_modules
+- name: "apm clean : delete unused packages in node_modules"
+  command: apm clean
+  when: clean is defined
+
+# Set environment and configuration variables for Atom
+- name: "apm config : set environment and configuration variables"
+  command: "apm config {{ item.command }} {{ item.key | default(omit) }} {{ item.value | default(omit) }}"
+  when:
+    - item is defined
+    - item.command is defined
+    - item.command != "edit"
+  with_items: "{{ config }}"
+
+# Deduplicate node_module packages
+- name: "apm dedupe : deduplicate node_module packages"
+  command: "apm dedupe {{ item }}"
+  when:
+    - item is defined
+  with_items: "{{ dedupe }}"
+
+# Install Atom packages
+- name: "apm install : install packages"
+  command: "apm install {{ item }}"
+  ignore_errors: true
+  register: packages_status
+  when:
+    - item is defined
+    # - item | search( "--packages-file" ) != true
+  with_items: "{{ packages }}"
+
+# Copy packages file to Ansible host
+- name: "copy package files to host"
+  copy: src='{{ role_path }}/files/{{ item }}' dest=/tmp
+  when:
+    - item is defined
+  with_items: "{{ package_files }}"
+
+# Install packages listed in packages file
+- name: "apm install package_files"
+  command: "apm install --packages-file '/tmp/{{ item }}'"
+  ignore_errors: true
+  register: package_files_status
+  when:
+    - item is defined
+  with_items: "{{ package_files }}"
+
+# Unistall Atom packages
+- name: "apm uninstall packages"
+  command: "apm uninstall {{ item }}"
+  ignore_errors: true
+  register: packages_uninstall_status
+  when:
+    - item is defined
+  with_items: "{{ uninstall }}"

@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Chris White
+  description: Ansible role to install and configure Atom on macOS with packages and preferences automatically set up.
+  license: MIT
+  min_ansible_version: 1.2
+  platforms:
+    - name: Darwin
+      versions:
+        - all
+  categories:
+    - system
+dependencies:
+  - roderik.superlumic-homebrew
