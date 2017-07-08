@@ -16,7 +16,7 @@ The only default task is installing Atom from Homebrew Cask, no other configurat
 
 ## Role variables
 
-The [example configuration]() file is more fully documented and a good starting point. My full configuration can be viewed [here](https://github.com/christopherdwhite/superlumic-config/blob/master/roles/apps-atom/vars/main.yml).
+The [example configuration](example/vars-example.yml) file is more fully documented and a good starting point. My full configuration can be viewed [here](https://github.com/christopherdwhite/superlumic-config/blob/master/roles/apps-atom/vars/main.yml).
 
 ### Atom Installation
 
