@@ -56,23 +56,24 @@
     # - item | search( "--packages-file" ) != true
   with_items: "{{ packages }}"
 
-- debug: msg="{{ role_path }}"
+- name: Echo role_path
+  debug: msg="Role Path\: {{ role_path }}"
 
-# Copy packages file to Ansible host
-- name: "copy package files to host"
-  copy: src='{{ role_path }}/files/{{ item }}' dest=/tmp
-  when:
-    - item is defined
-  with_items: "{{ package_files }}"
-
-# Install packages listed in packages file
-- name: "apm install package_files"
-  command: "apm install --packages-file '/tmp/{{ item }}'"
-  ignore_errors: true
-  register: package_files_status
-  when:
-    - item is defined
-  with_items: "{{ package_files }}"
+# # Copy packages file to Ansible host
+# - name: "copy package files to host"
+#   copy: src='{{ role_path }}/files/{{ item }}' dest=/tmp
+#   when:
+#     - item is defined
+#   with_items: "{{ package_files }}"
+#
+# # Install packages listed in packages file
+# - name: "apm install package_files"
+#   command: "apm install --packages-file '/tmp/{{ item }}'"
+#   ignore_errors: true
+#   register: package_files_status
+#   when:
+#     - item is defined
+#   with_items: "{{ package_files }}"
 
 # Unistall Atom packages
 - name: "apm uninstall packages"
