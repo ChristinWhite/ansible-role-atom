@@ -46,6 +46,18 @@
     - item is defined
   with_items: "{{ dedupe }}"
 
+# Develop
+
+# Disable
+
+# Docs
+
+# Enable
+
+# Featured
+
+# Init
+
 # Install Atom packages
 - name: "apm install : install packages"
   command: "apm install {{ item }}"
@@ -71,6 +83,14 @@
   when:
     - item is defined
   with_items: "{{ package_files }}"
+
+# Link
+
+# List
+
+# Links
+
+# Login
 
 # Unistall Atom packages
 - name: "apm uninstall packages"
