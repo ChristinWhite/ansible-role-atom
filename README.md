@@ -2,6 +2,8 @@
 
 Ansible role to install and configure Atom on macOS with packages and preferences automatically set up.
 
+![Licnese](https://img.shields.io/github/license/mashape/apistatus.svg)
+
 ## Requirements
 
 - macOS 10.12 (earlier versions may work)
