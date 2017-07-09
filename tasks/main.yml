@@ -58,7 +58,7 @@
 
 # Copy packages file to Ansible host
 - name: "copy package files to host"
-  copy: src='files/{{ item }}' dest=/tmp
+  copy: src='{{ item }}' dest=/tmp
   when:
     - item is defined
   with_items: "{{ package_files }}"
