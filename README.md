@@ -22,6 +22,22 @@ The [example configuration](example/vars-example.yml) file is more fully documen
 
 ### Atom Installation
 
+You can install multiple versions of Atom by setting their respective booleans to true, they will not cancel each other out.
+
+Install the stable version of Atom from Homebrew Cask:
+
+```yaml
+### Install Stable
+#
+# Required: no
+# Type: boolean
+# Default: true
+#
+# Description: Installs Atom from Homebrew Cask
+#
+stable: true
+```
+
 Install the beta version of Atom from Homebrew Cask:
 
 ```yaml
@@ -31,8 +47,7 @@ Install the beta version of Atom from Homebrew Cask:
 # Type: boolean
 # Default: false
 #
-# Description:
-#   Installs the beta version of Atom from Homebrew Cask
+# Description: Installs the beta version of Atom from Homebrew Cask
 #
 beta: true
 ```
@@ -50,11 +65,10 @@ The packages variable runs `apm install {{ packages }}` and supports all options
 # Type: list
 # Default: false
 #
-# Description:
-#   Installs listed packages
-#
 # Command:
 #   apm install {{ packages }}
+#
+# Description: Installs listed packages
 #
 packages:
   - aligner
@@ -82,11 +96,9 @@ To use a packages file add a `files` folder to your role and include the file wi
 # Command:
 #   apm install --package-file {{ package_files }}
 #
-# Description:
-#   This task uses the same install command as the install packages but allows you to pass a plaintext file listing packages delineated by new lines.
+# Description: This task uses the same install command as the install packages but allows you to pass a plaintext file listing packages delineated by new lines.
 #
-# Requirement:
-#   Plaintext files should be placed within the files folder in the role and should only include the filename.
+# Requirement: Plaintext files should be placed within the files folder in the role and should only include the filename.
 #
 package_files:
   - 'packages.txt'
@@ -106,11 +118,54 @@ If you need to ensure that a package is not installed anywhere you can specify a
 # Command:
 #   apm uninstall {{ packages }}
 #
-# Description:
-#   Uninstall packages
+# Description: Uninstall packages
 #
 uninstall:
 - alginer-luo
+```
+
+#### Upgrade all packages
+
+To automatically update all packages when Ansible set the following variable.
+
+```yaml
+### upgrade all packages
+#
+# Required: no
+# Type: boolean
+# Default: false
+#
+# Command:
+#   apm upgrade
+#
+# Description: Upgrades all installed packages with updates where available
+#
+# Note: If you need to specify individual packages or use any of the options please use the next variable
+#
+upgrade_all_packages: true
+```
+
+If you need to specify specefic packages and/or you want to provide the upgrade command with any of the options you can do that with this list variable:
+
+```yaml
+### upgrade packages
+#
+# Required: no
+# Type: list
+# Default: false
+#
+# Command:
+#   apm upgrade {{ upgrade_packages }}
+#
+# Description:
+#   Upgrade packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify options and/or specific packages to upgrade.
+#
+# Note: As with other commands, some of these options don't make much sense in the context of Ansible and will not echo to the shell.
+#
+upgrade_packages:
+  - aligner
+  - 'aligner-css --compatible'
+  - --list
 ```
 
 #### Other commands

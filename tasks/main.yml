@@ -3,16 +3,23 @@
 # Install Atom from Homebrew Cask
 - name: Install Atom if necessary
   homebrew_cask: name='atom' state=present
+  register: install_atom_output
+  when: stable
+
+# Tap versions
 
 # Install Atom Beta from Homebrew Cask if the `beta` boolean is not configured
 - name: Install Atom Beta
   homebrew_cask: name='atom-beta' state=present
+  register: install_atom_beta_output
   when: beta
+
+# Install Atom versions
 
 # Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
 - name: Ensure Atom & apm installed
   command: which atom apm
-  register: atom_status
+  register: atom_installed_status
   failed_when: atom_status.rc
   changed_when: false
   check_mode: no
@@ -28,23 +35,31 @@
 # Delete unused packages in node_modules
 - name: 'apm clean'
   command: apm clean
+  register: apm_clean_output
   when: clean is defined
 
 # Set environment and configuration variables for Atom
 - name: 'apm config'
   command: 'apm config {{ item.command }} {{ item.key | default(omit) }} {{ item.value | default(omit) }}'
+  register: apm_config_output
   when:
     - item is defined
     - item.command is defined
     - item.command != 'edit'
   with_items: '{{ config }}'
 
-# Deduplicate node_module packages
+# Deduplicate all node_module packages
+- name: 'apm dedupe all'
+  command: 'apm dedupe'
+  register: apm_dedupe_all_output
+  when: dedupe_all_packages
+
+# Deduplicate individual node_module packages
 - name: 'apm dedupe'
   command: 'apm dedupe {{ item }}'
-  when:
-    - item is defined
-  with_items: '{{ dedupe }}'
+  register: apm_dedupe_output
+  when: item is defined
+  with_items: '{{ dedupe_packages }}'
 
 # develop
 
@@ -62,7 +77,7 @@
 - name: 'apm install : install packages'
   command: 'apm install {{ item }}'
   ignore_errors: true
-  register: packages_status
+  register: apm_install_packages_output
   when:
     - item is defined
     # - item | search( '--packages-file' ) != true
@@ -71,17 +86,15 @@
 # Copy packages file to Ansible host
 - name: 'copy package files to host'
   copy: src='{{ item }}' dest=/tmp
-  when:
-    - item is defined
+  when: item is defined
   with_items: '{{ package_files }}'
 
 # Install packages listed in packages file
 - name: 'apm install package_files'
   command: 'apm install --packages-file "/tmp/{{ item }}"'
   ignore_errors: true
-  register: package_files_status
-  when:
-    - item is defined
+  register: apm_install_files_output
+  when: item is defined
   with_items: '{{ package_files }}'
 
 # link
@@ -108,9 +121,8 @@
 - name: 'apm uninstall packages'
   command: 'apm uninstall {{ item }}'
   ignore_errors: true
-  register: packages_uninstall_status
-  when:
-    - item is defined
+  register: apm_uninstall_output
+  when: item is defined
   with_items: '{{ uninstall }}'
 
 # unlink
@@ -119,6 +131,19 @@
 
 # unstar
 
-# upgrade
+# Upgrade all Atom packages to latest versions
+- name: 'apm upgrade all packages'
+  command: 'apm upgrade'
+  ignore_errrors: true
+  register: apm_upgrade_all_packages_output
+  when: upgrade_all_packages
+
+# Upgrade individual Atom packages to latest versions
+- name: 'apm upgrade packages'
+  command: 'apm upgrade {{ item | default (omit) }}'
+  ignore_errrors: true
+  register: apm_upgrade_output
+  when: item is defined
+  with_items: '{{ upgrade_packages }}'
 
 # view

@@ -12,6 +12,17 @@
 # Core Configuration
 # =============================================================================
 
+### Install Stable
+#
+# Required: no
+# Type: boolean
+# Default: true
+#
+# Description:
+#   Installs Atom from Homebrew Cask
+#
+stable: true
+
 ### Install Beta
 #
 # Required: no
@@ -112,6 +123,57 @@ package_files:
 uninstall:
 - alginer-luo
 
+### upgrade all packages
+#
+# Required: no
+# Type: boolean
+# Default: false
+#
+# Command:
+#   apm upgrade
+#
+# Command --help:
+#   Usage: apm upgrade
+#          apm upgrade --list
+#          apm upgrade [<package_name>...]
+#
+#   Upgrade out of date packages installed to ~/.atom/packages
+#
+#   This command lists the out of date packages and then prompts to install
+#   available updates.
+#
+#   Options:
+#     --json         Output outdated packages as a JSON array                                  [boolean]
+#     --compatible   Only list packages/themes compatible with this Atom version                [string]
+#     --verbose      Show verbose debug information                           [boolean] [default: false]
+#     -c, --confirm  Confirm before installing updates                         [boolean] [default: true]
+#     -h, --help     Print this usage message
+#     -l, --list     List but don't install the outdated packages                              [boolean]
+#
+# Note:
+#   If you need to specify individual packages or use any of the options please use the next variable
+#
+upgrade_all_packages: true
+
+### upgrade packages
+#
+# Required: no
+# Type: list
+# Default: false
+#
+# Command:
+#   apm upgrade {{ upgrade_packages }}
+#
+# Description:
+#   Upgrade packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify options and/or specific packages to upgrade.
+#
+# Note: As with other commands, some of these options don't make much sense in the context of Ansible and will not echo to the shell.
+#
+upgrade_packages:
+  - aligner
+  - 'aligner-css --compatible'
+  - --list
+
 # Less Common Settings
 # =============================================================================
 
@@ -152,14 +214,11 @@ config:
   - { command: 'set', key: 'some key', value: 'some value' }
   - { command: 'delete', key: 'some key'}
 
-### dedupe
+### dedupe all packages
 #
 # Required: no
-# Type: list
-# Default: false
-#
-# Command:
-#   apm dedupe {{ dedupe.packages }}
+# Type: boolean
+# Defualt: false
 #
 # Command --help:
 #   Usage: apm dedupe [<package_name>...]
@@ -168,9 +227,19 @@ config:
 #
 #   This command is experimental.
 #
-# Note:
-#   It appears that you can run this without specifying a package to presumably dedupe all but this has not been tested.
+dedupe_all_packages: true
+
+### dedupe packages
 #
-dedupe:
-  -
+# Required: no
+# Type: list
+# Default: false
+#
+# Command:
+#   apm dedupe {{ dedupe.packages }}
+#
+# Description:
+#   dedupe packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify individual packages to dedupe.
+#
+dedupe_packages:
   - 'some package'
