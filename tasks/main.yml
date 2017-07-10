@@ -12,7 +12,7 @@
   when: beta
 
 # Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
-- name: Ensure Atom and apm are installed
+- name: Ensure Atom & apm installed
   command: which atom apm
   register: atom_status
   failed_when: atom_status.rc
