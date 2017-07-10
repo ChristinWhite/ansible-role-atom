@@ -21,7 +21,7 @@
   command: which atom apm
   register: atom_installed_status
   failed_when: atom_installed_status.rc
-  changed_when: fals
+  changed_when: false
   check_mode: no
 
 ### APM Package Management
