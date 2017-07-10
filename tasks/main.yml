@@ -65,14 +65,14 @@
     - item is defined
   with_items: "{{ package_files }}"
 
-# # Install packages listed in packages file
-# - name: "apm install package_files"
-#   command: "apm install --packages-file '/tmp/{{ item }}'"
-#   ignore_errors: true
-#   register: package_files_status
-#   when:
-#     - item is defined
-#   with_items: "{{ package_files }}"
+# Install packages listed in packages file
+- name: "apm install package_files"
+  command: "apm install --packages-file '/tmp/{{ item }}'"
+  ignore_errors: true
+  register: package_files_status
+  when:
+    - item is defined
+  with_items: "{{ package_files }}"
 
 # Unistall Atom packages
 - name: "apm uninstall packages"
