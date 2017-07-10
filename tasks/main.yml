@@ -134,7 +134,7 @@
 # Upgrade all Atom packages to latest versions
 - name: 'apm upgrade all packages'
   command: 'apm upgrade'
-  ignore_errrors: true
+  ignore_errors: true
   register: apm_upgrade_all_packages_output
   when: upgrade_all_packages
 
