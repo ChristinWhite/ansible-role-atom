@@ -20,4 +20,4 @@ beta: false
 dedupe_all_packages: false
 
 # # Upgrade all packages
-# upgrade_all_packages: false
+upgrade_all_packages: false
