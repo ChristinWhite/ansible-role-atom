@@ -141,7 +141,7 @@
 # Upgrade individual Atom packages to latest versions
 - name: 'apm upgrade packages'
   command: 'apm upgrade {{ item | default (omit) }}'
-  ignore_errrors: true
+  ignore_errors: true
   register: apm_upgrade_output
   when: item is defined
   with_items: '{{ upgrade_packages }}'
