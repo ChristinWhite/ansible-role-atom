@@ -86,7 +86,7 @@ packages:
 #   Plaintext files should be placed within the files folder in the role and should only include the filename. The path is provided by the role.
 #
 package_files:
-  - packages.txt
+  - 'packages.txt'
 
 ### Uninstall Packages
 #
