@@ -86,10 +86,10 @@ To use a packages file add a `files` folder to your role and include the file wi
 #   This task uses the same install command as the install packages but allows you to pass a plaintext file listing packages delineated by new lines.
 #
 # Requirement:
-#   Plaintext files should be placed within the files folder in the role and should only include the filename. The path is provided by the role.
+#   Plaintext files should be placed within the files folder in the role and should only include the filename.
 #
 package_files:
-  - packages.txt
+  - 'packages.txt'
 ```
 
 #### Uninstall packages
@@ -105,7 +105,7 @@ If you need to ensure that a package is not installed anywhere you can specify a
 #
 # Command:
 #   apm uninstall {{ packages }}
-#   
+#
 # Description:
 #   Uninstall packages
 #

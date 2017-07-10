@@ -46,6 +46,18 @@
     - item is defined
   with_items: '{{ dedupe }}'
 
+# develop
+
+# disable
+
+# docs
+
+# enable
+
+# featured
+
+# init
+
 # Install Atom packages
 - name: 'apm install : install packages'
   command: 'apm install {{ item }}'
@@ -72,6 +84,26 @@
     - item is defined
   with_items: '{{ package_files }}'
 
+# link
+
+# links
+
+# list
+
+# login
+
+# publish
+
+# rebuild-module-cache
+
+# search
+
+# star
+
+# stars
+
+# test
+
 # Unistall Atom packages
 - name: 'apm uninstall packages'
   command: 'apm uninstall {{ item }}'
@@ -80,3 +112,13 @@
   when:
     - item is defined
   with_items: '{{ uninstall }}'
+
+# unlink
+
+# unpublish
+
+# unstar
+
+# upgrade
+
+# view
