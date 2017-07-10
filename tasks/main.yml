@@ -1,5 +1,7 @@
 ---
 
+debug: msg="Role Path for ansible-role-atom:\ {{ role_path }}"
+
 # Install Atom from Homebrew Cask
 - name: Install Atom if necessary
   homebrew_cask: name="atom" state=present
