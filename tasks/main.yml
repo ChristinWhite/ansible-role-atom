@@ -138,7 +138,7 @@
   register: apm_upgrade_all_packages_output
   when:
     - upgrade_all_packages is defined
-    - upgrade_all_packages == true
+    - upgrade_all_packages
 
 # Upgrade individual Atom packages to latest versions
 - name: 'apm upgrade packages'
