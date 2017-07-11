@@ -132,7 +132,7 @@
 - name: 'apm list packages'
   command: 'apm list {{ item | default(omit) }}'
   ignore_errors: true
-  regiser: apm_list_output
+  register: apm_list_output
   when: item is defined
   with_items: '{{ list_options }}'
 
