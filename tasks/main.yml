@@ -1,53 +1,49 @@
 ---
 
-# Install Atom from Homebrew Cask
-- name: Install Atom if necessary
+# install atom
+# =============================================================================
+
+# install atom from homebrew cask
+- name: install atom
   homebrew_cask: name='atom' state=present
   register: install_atom_output
   when:
     - stable is defined
     - stable
 
-# Tap homebrew cask versions
+# tap homebrew cask versions
 - name: tap homebrew cask versions
   homebrew_tap:
     name: caskroom/versions
     state: present
   register: tap_homebrew_cask
 
-# Install Atom Beta from Homebrew Cask if the `beta` boolean is not configured
-- name: Install Atom Beta
+# install atom beta from homebrew cask versions
+- name: install atom beta
   homebrew_cask: name='atom-beta' state=present
   register: install_atom_beta_output
   when:
     - beta is defined
     - beta
 
-# Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
-- name: Ensure Atom & apm installed
-  command: which atom apm
-  register: atom_installed_status
-  failed_when: atom_installed_status.rc
+# ensure apm (atom package manager) is installed
+- name: ensure apm installed
+  command: which apm
+  register: apm_installed_status
+  failed_when: apm_installed_status.rc
   changed_when: false
   check_mode: no
 
-### APM Package Management
-#
-# Description:
-#   These tasks automate Atom package management using apm, Atom's package CLI. These tasks are not yet complete but I am adding adding more as I improve the role.
-#
-# Notes:
-#   1. Some apm commands and options may not make sense in the context of Ansible but I've endeavored to include as many as possible for edge cases.
-#   2. I am only adding primary commands, alaises such as `delete`, `remove` and `erase` instead of `uninstall` will not work. To see what the primary command is use `apm *command* --help` and make note of the usage.
-#
+# apm (atom package manager) commands
+# =============================================================================
 
-# Delete unused packages in node_modules
+# apm clean : delete unused packages in node_modules
 - name: 'apm clean'
   command: apm clean
   register: apm_clean_output
   when: clean is defined
 
-# Set environment and configuration variables for Atom
+# apm config : set environment and configuration variables for atom
 - name: 'apm config'
   command: 'apm config {{ item.command }} {{ item.key | default(omit) }} {{ item.value | default(omit) }}'
   register: apm_config_output
@@ -57,7 +53,7 @@
     - item.command != 'edit'
   with_items: '{{ config }}'
 
-# Deduplicate all node_module packages
+# apm dedupe : deduplicate all node_module packages
 - name: 'apm dedupe all'
   command: 'apm dedupe'
   register: apm_dedupe_all_output
@@ -65,7 +61,7 @@
     - dedupe_all_packages is defined
     - dedupe_all_packages
 
-# Deduplicate individual node_module packages
+# apm dedupe : deduplicate individual node_module packages
 - name: 'apm dedupe'
   command: 'apm dedupe {{ item }}'
   register: apm_dedupe_output
@@ -84,23 +80,23 @@
 
 # init
 
-# Install Atom packages
-- name: 'apm install : install packages'
+# apm install : install atom packages
+- name: 'apm install packages'
   command: 'apm install {{ item }}'
   ignore_errors: true
   register: apm_install_packages_output
   when:
     - item is defined
-    # - item | search( '--packages-file' ) != true
+    - item | search( '--packages-file' ) != true
   with_items: '{{ packages }}'
 
-# Copy packages file to Ansible host
+# apm install : copy packages file to Ansible host
 - name: 'copy package files to host'
   copy: src='{{ item }}' dest=/tmp
   when: item is defined
   with_items: '{{ package_files }}'
 
-# Install packages listed in packages file
+# apm install : install packages listed in packages file
 - name: 'apm install package_files'
   command: 'apm install --packages-file "/tmp/{{ item }}"'
   ignore_errors: true
@@ -112,7 +108,13 @@
 
 # links
 
-# list
+# apm list : list packages
+- name: 'apm list packages'
+  command: 'apm list {{ item | default(omit) }}'
+  ignore_errors: true
+  regiser: apm_list_output
+  when: item is defined
+  with_items: '{{ list_options }}'
 
 # login
 
@@ -128,7 +130,7 @@
 
 # test
 
-# Unistall Atom packages
+# apm uninstall : unistall atom packages
 - name: 'apm uninstall packages'
   command: 'apm uninstall {{ item }}'
   ignore_errors: true
@@ -142,7 +144,7 @@
 
 # unstar
 
-# Upgrade all Atom packages to latest versions
+# apm upgrade : upgrade all atom packages to latest versions
 - name: 'apm upgrade all packages'
   command: 'apm upgrade'
   ignore_errors: true
@@ -151,7 +153,7 @@
     - upgrade_all_packages is defined
     - upgrade_all_packages
 
-# Upgrade individual Atom packages to latest versions
+# apm upgrade : upgrade individual atom packages to latest versions
 - name: 'apm upgrade packages'
   command: 'apm upgrade {{ item | default (omit) }}'
   ignore_errors: true
@@ -161,11 +163,8 @@
 
 # view
 
-### atom preferences
-#
-# Description:
-#   These tasks will assist in setting up your preferences through the .atom dotfile. You will most likely only use one or two of these.
-#
+# atom dotfiles
+# =============================================================================
 
 # include file
 

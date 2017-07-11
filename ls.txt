@@ -1,0 +1,6 @@
+README.md
+defaults
+example
+ls.txt
+meta
+tasks

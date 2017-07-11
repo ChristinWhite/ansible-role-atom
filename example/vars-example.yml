@@ -1,18 +1,21 @@
 ---
 
-### apps-atom Variables
+### apps-atom variables
 #
 # Overview: Configure the preferences and packages that Atom uses
 #
 # Description:
 #   Define your preferences for Atom below, default variables have been set but are set to be as neutral and nondestructive as possible
 #
+# Note:
+#   Many of the commands and options below may not make sense to use in the context of Ansible because the output will not be written to your shell; however, when combined with logging they may be helpful in some edge cases.
+#
 ###
 
-# Core Configuration
+# install atom
 # =============================================================================
 
-### Install Stable
+### install stable version
 #
 # Required: no
 # Type: boolean
@@ -23,7 +26,7 @@
 #
 stable: true
 
-### Install Beta
+### install beta version
 #
 # Required: no
 # Type: boolean
@@ -34,10 +37,13 @@ stable: true
 #
 beta: true
 
-### Install Packages
+# core package commands
+# =============================================================================
+
+### install packages
 #
 # Required: no
-# Type: list
+# Type: sequence
 # Default: false
 #
 # Command:
@@ -67,24 +73,22 @@ beta: true
 #     -s, --silent      Set the npm log level to silent                                        [boolean]
 #     -q, --quiet       Set the npm log level to warn                                          [boolean]
 #
-#      Prefix an option with `no-` to set it to false such as --no-color to disable colored output.
-#
 # Note:
-#   All of the options are supported except for --package-file but not all of them make sense in the context of Ansible unless you're doing some kind of output logging.
+#   All of the options are supported except for --package-file which can be used in the next variable
 #
 packages:
   - aligner
-  - aligner-css --check -- verbose --production --compatible
+  - 'aligner-css --check -- verbose --production --compatible > aligner-css.txt'
   - aligner-javascript --silent
   - aligner-php --quiet
   - aligner-scss@1.3.0
   - adrianlee44/atom-aligner-ruby
   - https://github.com/adrianlee44/atom-aligner-stylus
 
-### Install Packages from File
+### install packages from file
 #
 # Required: no
-# Type: list (filenames)
+# Type: sequence
 # Default: false
 #
 # Command:
@@ -94,15 +98,15 @@ packages:
 #   This task uses the same install command as the install packages but allows you to pass a plaintext file listing packages delineated by new lines.
 #
 # Requirement:
-#   Plaintext files should be placed within the files folder in the role and should only include the filename.
+#   - plaintext files should be placed within the files folder in the role and should only include the filename.
 #
 package_files:
   - 'packages.txt'
 
-### Uninstall Packages
+### uninstall packages
 #
 # Required: no
-# Type: list
+# Type: sequence
 # Default: false
 #
 # Command:
@@ -158,23 +162,21 @@ upgrade_all_packages: true
 ### upgrade packages
 #
 # Required: no
-# Type: list
+# Type: sequence
 # Default: false
 #
 # Command:
 #   apm upgrade {{ upgrade_packages }}
 #
 # Description:
-#   Upgrade packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify options and/or specific packages to upgrade.
-#
-# Note: As with other commands, some of these options don't make much sense in the context of Ansible and will not echo to the shell.
+#   Upgrade packages uses the same basic command as the previous variable but takes a sequence instead of a boolean so that you can specify individual packages and/or options
 #
 upgrade_packages:
   - aligner
-  - 'aligner-css --compatible'
-  - --list
+  - aligner-css --compatible
+  - '--list > package_upgrades.txt'
 
-# Less Common Settings
+# other package commands
 # =============================================================================
 
 ### clean
@@ -194,7 +196,7 @@ clean: true
 ### config
 #
 # Required: no
-# Type: array
+# Type: dictionary
 # Default: false
 #
 # Command:
@@ -208,11 +210,13 @@ clean: true
 #          apm config edit
 #
 # Note:
-#   All options are supported except for edit but not all of them make sense in the context of Ansible unless your doing some kind of output logging. Set and delete are the only options you would commonly use. Trying to use edit will be skipped altogether to prevent the text editor from hijacking the shell
+#   All options are supported except for edit. Trying to use edit will be skipped altogether to prevent the text editor from hijacking the shell
 #
 config:
   - { command: 'set', key: 'some key', value: 'some value' }
   - { command: 'delete', key: 'some key'}
+
+# TODO: config edit with file or template
 
 ### dedupe all packages
 #
@@ -232,14 +236,52 @@ dedupe_all_packages: true
 ### dedupe packages
 #
 # Required: no
-# Type: list
+# Type: sequence
 # Default: false
 #
 # Command:
 #   apm dedupe {{ dedupe.packages }}
 #
 # Description:
-#   dedupe packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify individual packages to dedupe.
+#   dedupe packages uses the same basic command as the previous variable but takes a sequence instead of a boolean so that you can specify individual packages to dedupe.
 #
 dedupe_packages:
   - 'some package'
+
+### list packages
+#
+# Required: no
+# Type: sequence
+# Default: false
+#
+# Command:
+#   apm list {{ list_options }}
+#
+# Command --help:
+#   Usage: apm list
+#          apm list --themes
+#          apm list --packages
+#          apm list --installed
+#          apm list --installed --bare > my-packages.txt
+#          apm list --json
+#
+#   List all the installed packages and also the packages bundled with Atom.
+#
+#   Options:
+#     -b, --bare       Print packages one per line with no formatting                          [boolean]
+#     -d, --dev        Include dev packages                                    [boolean] [default: true]
+#     -h, --help       Print this usage message
+#     -i, --installed  Only list installed packages/themes                                     [boolean]
+#     -j, --json       Output all packages as a JSON object                                    [boolean]
+#     -l, --links      Include linked packages                                 [boolean] [default: true]
+#     -t, --themes     Only list themes                                                        [boolean]
+#     -p, --packages   Only list packages                                                      [boolean]
+#
+# Notes:
+#   Unless you're logging the output this command isn't very useful in the context of Ansible
+#
+list_options:
+  - --themes
+  - '--installed --bare > my-packages.txt'
+  - '--json > my-packages.json'
+  - '--themes --json --bare > /tmp/atom\ themes.json'
