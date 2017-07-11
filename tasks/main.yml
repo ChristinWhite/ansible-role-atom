@@ -37,8 +37,8 @@
 #   These tasks automate Atom package management using apm, Atom's package CLI. These tasks are not yet complete but I am adding adding more as I improve the role.
 #
 # Notes:
-#   - Some apm commands and options may not make sense in the context of Ansible but I've endeavored to include as many as possible for edge cases.
-#   - I am only adding primary commands, alaises such as `delete`, `remove` and `erase` instead of `uninstall` will not work. To see what the primary command is use `apm *command* --help` and make note of the usage.
+#   1. Some apm commands and options may not make sense in the context of Ansible but I've endeavored to include as many as possible for edge cases.
+#   2. I am only adding primary commands, alaises such as `delete`, `remove` and `erase` instead of `uninstall` will not work. To see what the primary command is use `apm *command* --help` and make note of the usage.
 #
 
 # Delete unused packages in node_modules
@@ -160,3 +160,17 @@
   with_items: '{{ upgrade_packages }}'
 
 # view
+
+### atom preferences
+#
+# Description:
+#   These tasks will assist in setting up your preferences through the .atom dotfile. You will most likely only use one or two of these.
+#
+
+# include file
+
+# symlink from icloud, dropbox or another cloud sync provider
+
+# read from repo
+
+# write from repo
