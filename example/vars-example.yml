@@ -103,6 +103,40 @@ packages:
 package_files:
   - 'packages.txt'
 
+### enable packages
+#
+# Required: no
+# Type: sequence
+# Default: false
+#
+# Command:
+#   apm disable {{ disable_packages }}
+#
+# Command --help:
+#   Usage: apm enable [<package_name>]...
+#
+#   Enables the named package(s).
+#
+enable_packages:
+  - aligner
+
+### disable packages
+#
+# Required: no
+# Type: sequence
+# Default: false
+#
+# Command:
+#   apm disable {{ disable_packages }}
+#
+# Command --help:
+#   Usage: apm disable [<package_name>]...
+#
+#   Disables the named package(s).
+#
+disable_packages:
+  - aligner-css
+
 ### uninstall packages
 #
 # Required: no

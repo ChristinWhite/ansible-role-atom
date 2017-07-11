@@ -70,11 +70,21 @@
 
 # develop
 
-# disable
+# apm disable : disable packages
+- name: 'apm disable packages'
+  command: 'apm disable {{ item }}'
+  register: apm_disable_output
+  when: item is defined
+  with_items: '{{ disable_packages }}'
 
 # docs
 
-# enable
+# apm enable : enable packages
+- name: 'apm enable packages'
+  command: 'apm enable {{ item }}'
+  register: apm_enable_output
+  when: item is defined
+  with_items: '{{ enable_packages }}'
 
 # featured
 
