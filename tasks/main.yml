@@ -78,6 +78,11 @@
   with_items: '{{ disable_packages }}'
 
 # docs
+- name: 'apm docs for packages'
+  command: 'apm docs {{ item }}'
+  register: apm_docs_output
+  when: item is defined
+  with_items: '{{ docs_packages }}'
 
 # apm enable : enable packages
 - name: 'apm enable packages'

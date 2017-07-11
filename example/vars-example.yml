@@ -282,6 +282,31 @@ dedupe_all_packages: true
 dedupe_packages:
   - 'some package'
 
+### docs packages
+#
+# Required: no
+# Type: sequence
+# Default: false
+#
+# Command:
+#   apm dedupe {{ dedupe.packages }}
+#
+# Command --help:
+#   Usage: apm docs [options] <package_name>
+#
+#   Open a package's homepage in the default browser.
+#
+#   Options:
+#     -h, --help   Print this usage message
+#     -p, --print  Print the URL instead of opening it                                         [boolean]
+#
+# Notes:
+#   The number of uses for this in the context of ansible are pretty limited but using the --print option might be helpful if logging
+#
+docs_packages:
+  - aligner
+  - 'linter > /tmp/atom\ package_linter.txt'
+
 ### list packages
 #
 # Required: no
