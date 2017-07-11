@@ -78,7 +78,7 @@ beta: true
 #
 packages:
   - aligner
-  - 'aligner-css --check -- verbose --production --compatible > aligner-css.txt'
+  - 'aligner-css --check -- verbose --production --compatible 0.49.0 > aligner-css.txt'
   - aligner-javascript --silent
   - aligner-php --quiet
   - aligner-scss@1.3.0
@@ -208,6 +208,7 @@ upgrade_all_packages: true
 upgrade_packages:
   - aligner
   - aligner-css --compatible
+  - --compatible 0.49.0
   - '--list > package_upgrades.txt'
 
 # other package commands
@@ -306,6 +307,36 @@ dedupe_packages:
 docs_packages:
   - aligner
   - 'linter > /tmp/atom\ package_linter.txt'
+
+### featured packages
+#
+# Required: no
+# Type: sequence
+# Default: false
+#
+# command:
+#   apm featured
+#
+# Command --help
+#   Usage: apm featured
+#          apm featured --themes
+#          apm featured --compatible 0.49.0
+#
+#   List the Atom packages and themes that are currently featured in the
+#   atom.io registry.
+#
+#   Options:
+#     --json            Output featured packages as JSON array                                 [boolean]
+#     -h, --help        Print this usage message
+#     -t, --themes      Only list themes                                                       [boolean]
+#     -c, --compatible  Only list packages/themes compatible with this Atom version             [string]
+#
+# Notes:
+#   The only potential use I can think of for this command would be to run it on a set schedule and append the output each time to a file so you can have a list of featured packages to review.
+featured_packages_options:
+  - --json
+  - '--themes >> /tmp/featured_atom_themes.txt'
+  - '--json --compatible 0.49.0 >> /tmp/featured_atom_packages.json'
 
 ### list packages
 #

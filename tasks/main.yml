@@ -91,7 +91,12 @@
   when: item is defined
   with_items: '{{ enable_packages }}'
 
-# featured
+# apm featured : list currently featured packages
+- name: apm featured packages
+  command: 'apm featured'
+  register: apm_featured_output
+  when: item is defined
+  with_items: '{{ featured_packages_options }}'
 
 # init
 
