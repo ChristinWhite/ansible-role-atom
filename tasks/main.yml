@@ -3,6 +3,12 @@
 # install atom
 # =============================================================================
 
+# update and upgrade homebrew
+- name: update and upgrade homebrew
+  homebrew:
+    update_homebrew: yes
+    upgrade_all: yes
+
 # install atom from homebrew cask
 - name: install atom
   homebrew_cask: name='atom' state=present
