@@ -218,14 +218,11 @@ config:
 ##### Dedupe
 
 ```yaml
-### dedupe
+### dedupe all packages
 #
 # Required: no
-# Type: list
-# Default: false
-#
-# Command:
-#   apm dedupe {{ dedupe.packages }}
+# Type: boolean
+# Defualt: false
 #
 # Command --help:
 #   Usage: apm dedupe [<package_name>...]
@@ -234,11 +231,23 @@ config:
 #
 #   This command is experimental.
 #
-# Note:
-#   It appears that you can run this without specifying a package to presumably dedupe all but this has not been tested.
+dedupe_all_packages: true
+```
+
+```yaml
+### dedupe packages
 #
-dedupe:
-  -
+# Required: no
+# Type: list
+# Default: false
+#
+# Command:
+#   apm dedupe {{ dedupe.packages }}
+#
+# Description:
+#   dedupe packages uses the same basic command as the previous variable but takes a list instead of a boolean so that you can specify individual packages to dedupe.
+#
+dedupe_packages:
   - 'some package'
 ```
 

@@ -15,9 +15,3 @@ stable: true
 
 # Atom Beta
 beta: false
-
-# Dedupe all packages
-dedupe_all_packages: false
-
-# # Upgrade all packages
-# upgrade_all_packages: false

@@ -4,17 +4,24 @@
 - name: Install Atom if necessary
   homebrew_cask: name='atom' state=present
   register: install_atom_output
-  when: stable
+  when:
+    - stable is defined
+    - stable
 
-# Tap versions
+# Tap homebrew cask versions
+- name: tap homebrew cask versions
+  homebrew_tap:
+    name: caskroom/versions
+    state: present
+  register: tap_homebrew_cask
 
 # Install Atom Beta from Homebrew Cask if the `beta` boolean is not configured
 - name: Install Atom Beta
   homebrew_cask: name='atom-beta' state=present
   register: install_atom_beta_output
-  when: beta
-
-# Install Atom versions
+  when:
+    - beta is defined
+    - beta
 
 # Ensure Atom and apm (Atom Package Manager) are installed, fail if either are missing
 - name: Ensure Atom & apm installed
@@ -52,7 +59,9 @@
 - name: 'apm dedupe all'
   command: 'apm dedupe'
   register: apm_dedupe_all_output
-  when: dedupe_all_packages
+  when:
+    - dedupe_all_packages is defined
+    - dedupe_all_packages
 
 # Deduplicate individual node_module packages
 - name: 'apm dedupe'
