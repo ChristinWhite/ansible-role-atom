@@ -3,6 +3,13 @@
 # install atom
 # =============================================================================
 
+# tap homebrew cask
+- name: tap homebrew cask
+  homebrew_tap:
+    name: caskroom/cask
+    state: present
+  register: tap_homebrew_cask
+
 # update and upgrade homebrew
 - name: update and upgrade homebrew
   homebrew:
@@ -32,8 +39,8 @@
     - beta is defined
     - beta
 
-# ensure apm (atom package manager) is installed
-- name: ensure apm installed
+# make sure apm (atom package manager) is installed
+- name: make sure apm is installed
   command: which apm
   register: apm_installed_status
   failed_when: apm_installed_status.rc

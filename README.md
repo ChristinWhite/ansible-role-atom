@@ -7,6 +7,7 @@ Ansible role to install and configure Atom on macOS with packages and preference
 ## Requirements
 
 - macOS 10.12 (earlier versions may work)
+- [Homebrew](https://brew.sh)  installed
 
 ## Notes
 
